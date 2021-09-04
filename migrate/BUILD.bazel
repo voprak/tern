@@ -1,0 +1,32 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "migrate",
+    srcs = [
+        "code.go",
+        "migrate.go",
+    ],
+    importpath = "github.com/jackc/tern/migrate",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_jackc_pgconn//:pgconn",
+        "@com_github_jackc_pgx_v4//:pgx",
+        "@com_github_masterminds_sprig//:sprig",
+    ],
+)
+
+go_test(
+    name = "migrate_test",
+    srcs = [
+        "code_test.go",
+        "migrate_test.go",
+    ],
+    data = glob(["testdata/**"]),
+    deps = [
+        ":migrate",
+        "@com_github_jackc_pgconn//:pgconn",
+        "@com_github_jackc_pgx_v4//:pgx",
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+    ],
+)
